@@ -1,0 +1,126 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 1. AI工具主分类（一级分类）
+model Category {
+  id          Int                @id @default(autoincrement())
+  name        String             @unique
+  slug        String             @unique
+  description String?
+  icon        String?            // 图标名称或路径
+  sortOrder   Int                @default(0) // 排序
+
+  // 关联
+  subCategories SubCategory[]    // 二级分类
+  tools         Tool[]           // 该分类下的工具
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+// 2. AI工具二级分类
+model SubCategory {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String
+  description String?
+
+  // 关联一级分类
+  categoryId  Int
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  // 关联工具
+  tools       Tool[]
+
+  createdAt   DateTime  @default(now())
+
+  @@unique([categoryId, slug])
+  @@index([categoryId])
+}
+
+// 3. 使用场景（原来的BusinessFunction）
+model UseCase {
+  id           Int      @id @default(autoincrement())
+  name         String   @unique
+  slug         String   @unique
+  description  String?
+  adoptionRate Float    @default(0.0) // 行业采用率指标
+
+  // 关联
+  tools        Tool[]
+
+  createdAt    DateTime @default(now())
+}
+
+// 4. AI 工具模型
+model Tool {
+  id           Int      @id @default(autoincrement())
+  name         String   @unique
+  slug         String   @unique
+  shortDesc    String   // 简短描述用于列表
+  description  String   // 详细描述
+  websiteUrl   String   // 官网链接
+  imageUrl     String?  // 本地路径 /uploads/tools/...
+  pricingType  String   @default("Free") // Free, Paid, Freemium
+  status       Int      @default(0) // 0:待审, 1:发布, 2:拒绝
+
+  // 关联分类（一级+二级）
+  categoryId   Int
+  category     Category    @relation(fields: [categoryId], references: [id])
+  subCategoryId Int?
+  subCategory  SubCategory? @relation(fields: [subCategoryId], references: [id])
+
+  // 关联使用场景
+  useCaseId    Int
+  useCase      UseCase     @relation(fields: [useCaseId], references: [id])
+
+  // 关联课程 (多对多)
+  courses      Course[]    @relation("ToolToCourse")
+
+  // 统计
+  views        Int         @default(0)
+  likes        Int         @default(0)
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([categoryId])
+  @@index([subCategoryId])
+  @@index([useCaseId])
+  @@index([status])
+}
+
+// 5. 商业化课程模型
+model Course {
+  id           Int      @id @default(autoincrement())
+  title        String
+  slug         String   @unique
+  description  String
+  coverImage   String?  // 本地路径 /uploads/courses/...
+  price        Float    @default(0)
+  buyUrl       String   // 外部购买链接
+  level        String   @default("Beginner") // Beginner, Advanced
+  studentCount Int      @default(0)
+
+  // 关联工具 (多对多)
+  tools        Tool[]   @relation("ToolToCourse")
+
+  status       Int      @default(1)
+  createdAt    DateTime @default(now())
+}
+
+// 6. 用户模型 (后台管理)
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String   // 加密存储
+  email     String   @unique
+  role      String   @default("USER") // ADMIN, USER
+  createdAt DateTime @default(now())
+}
