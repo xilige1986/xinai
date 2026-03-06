@@ -1,18 +1,25 @@
 import Link from 'next/link';
 import { Bot, Mail, Github, Twitter } from 'lucide-react';
+import { prisma } from '@/lib/db';
 
-const footerLinks = {
+async function getCategories() {
+  return await prisma.category.findMany({
+    orderBy: { sortOrder: 'asc' },
+    take: 8,
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+    },
+  });
+}
+
+const staticLinks = {
   产品: [
     { label: 'AI工具', href: '/tools' },
     { label: '职能分类', href: '/functions' },
     { label: '精品课程', href: '/courses' },
     { label: '提交工具', href: '/submit' },
-  ],
-  分类: [
-    { label: 'AI绘画', href: '/tools/ai-painting' },
-    { label: 'AI写作', href: '/tools/ai-writing' },
-    { label: '代码辅助', href: '/tools/code-assistant' },
-    { label: '聊天机器人', href: '/tools/chatbot' },
   ],
   关于: [
     { label: '关于我们', href: '/about' },
@@ -22,7 +29,19 @@ const footerLinks = {
   ],
 };
 
-export function Footer() {
+export async function Footer() {
+  const categories = await getCategories();
+
+  const categoryLinks = categories.map((cat) => ({
+    label: cat.name,
+    href: `/tools/category/${cat.slug}`,
+  }));
+
+  const footerLinks = {
+    ...staticLinks,
+    分类: categoryLinks.length > 0 ? categoryLinks : staticLinks.产品,
+  };
+
   return (
     <footer className="border-t border-border/50 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">

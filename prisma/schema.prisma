@@ -87,6 +87,9 @@ model Tool {
   views        Int         @default(0)
   likes        Int         @default(0)
 
+  // 运营排序字段（数值越大越靠前，用于商业推荐）
+  sortOrder    Int         @default(0)
+
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 

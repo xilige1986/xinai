@@ -53,6 +53,7 @@ export type Tool = {
   useCase?: UseCase;
   views: number;
   likes: number;
+  sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
   courses?: Course[];
