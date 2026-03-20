@@ -1,0 +1,130 @@
+# AI工具库 - 搜索引擎爬虫规则
+# 允许所有爬虫访问
+User-agent: *
+
+# 允许访问公开页面
+Allow: /
+Allow: /tools
+Allow: /tools/*
+Allow: /categories
+Allow: /categories/*
+Allow: /usecases
+Allow: /usecases/*
+Allow: /courses
+Allow: /courses/*
+Allow: /news
+Allow: /news/*
+Allow: /quicklinks
+Allow: /about
+Allow: /contact
+Allow: /search
+Allow: /sitemap.xml
+
+# ==================== 禁止爬取区域 ====================
+
+# 管理后台 - 绝对禁止
+Disallow: /admin
+Disallow: /admin/*
+
+# 用户个人中心/仪表盘
+Disallow: /dashboard
+Disallow: /dashboard/*
+Disallow: /profile
+Disallow: /profile/*
+Disallow: /settings
+Disallow: /settings/*
+
+# 认证相关页面
+Disallow: /login
+Disallow: /register
+Disallow: /signup
+Disallow: /signin
+Disallow: /auth
+Disallow: /auth/*
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+
+# API 接口 - 禁止爬取
+Disallow: /api
+Disallow: /api/*
+
+# 用户操作相关
+Disallow: /user
+Disallow: /user/*
+Disallow: /account
+Disallow: /account/*
+Disallow: /orders
+Disallow: /orders/*
+Disallow: /favorites
+Disallow: /favorites/*
+Disallow: /purchases
+Disallow: /purchases/*
+Disallow: /subscriptions
+Disallow: /subscriptions/*
+Disallow: /notifications
+Disallow: /notifications/*
+Disallow: /messages
+Disallow: /messages/*
+
+# 学习相关个人页面
+Disallow: /learn
+Disallow: /learn/*
+Disallow: /progress
+Disallow: /progress/*
+Disallow: /certificates
+Disallow: /certificates/*
+
+# 内容提交/编辑页面
+Disallow: /submit
+Disallow: /submit/*
+Disallow: /edit
+Disallow: /edit/*
+Disallow: /create
+Disallow: /create/*
+Disallow: /upload
+Disallow: /upload/*
+
+# 支付相关
+Disallow: /pay
+Disallow: /pay/*
+Disallow: /payment
+Disallow: /payment/*
+Disallow: /checkout
+Disallow: /checkout/*
+Disallow: /cart
+Disallow: /cart/*
+
+# 其他敏感路径
+Disallow: /internal
+Disallow: /internal/*
+Disallow: /system
+Disallow: /system/*
+Disallow: /debug
+Disallow: /debug/*
+Disallow: /test
+Disallow: /test/*
+Disallow: /tmp
+Disallow: /tmp/*
+Disallow: /temp
+Disallow: /temp/*
+Disallow: /cache
+Disallow: /cache/*
+Disallow: /logs
+Disallow: /logs/*
+Disallow: /backup
+Disallow: /backup/*
+
+# 搜索参数（避免爬取重复内容）
+Disallow: /*?*
+Allow: /*?page=
+Allow: /*?category=
+Allow: /*?sort=
+
+# 文件类型限制（可选）
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*.pdf$
+
+# ==================== 站点地图 ====================
+Sitemap: https://www.okrvv.cn/sitemap.xml

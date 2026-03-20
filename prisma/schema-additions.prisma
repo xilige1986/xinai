@@ -1,0 +1,75 @@
+// 添加到 schema.prisma 的模型
+
+// ==================== 多级推广奖励系统 ====================
+
+// 多级推广记录模型 - 记录每一级的推广奖励
+model MultiLevelReferralRecord {
+  id           Int      @id @default(autoincrement())
+
+  // 注册的新用户
+  newUserId    Int
+  newUser      User     @relation(fields: [newUserId], references: [id], onDelete: Cascade)
+
+  // 获得奖励的用户（可能是1级、2级、3级推荐人）
+  earnerId     Int
+  earner       User     @relation("EarnerRecords", fields: [earnerId], references: [id], onDelete: Cascade)
+
+  // 推广层级: 1=直接推荐, 2=间接推荐(2级), 3=间接推荐(3级)
+  level        Int
+
+  // 奖励积分
+  points       Int
+
+  // 该用户当时的会员等级
+  membershipAtReward String @default("MEMBER")
+
+  // 状态
+  status       Int      @default(1) // 1:有效, 0:无效
+
+  createdAt    DateTime @default(now())
+
+  @@index([newUserId])
+  @@index([earnerId])
+  @@index([level])
+  @@index([createdAt])
+}
+
+// 在 User 模型需要添加的关系：
+// multiLevelReferralRecords MultiLevelReferralRecord[] // 作为新用户被记录的记录
+// earnerRecords             MultiLevelReferralRecord[] @relation("EarnerRecords") // 作为推广人获得奖励的记录
+
+// SiteSetting 中需要添加的配置项：
+// - referralLevel2Enabled: "true" / "false" - 是否启用2级推广
+// - referralLevel3Enabled: "true" / "false" - 是否启用3级推广
+// - referralLevel1Reward: "10" - 1级推广奖励积分（已有）
+// - referralLevel2Reward: "5" - 2级推广奖励积分
+// - referralLevel3Reward: "3" - 3级推广奖励积分
+// - referralFounderOnly: "true" / "false" - 是否仅限创始股东享受多级奖励
+
+// ==================== 原有模型（已合并到主schema） ====================
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  orderNo   String   @unique // 订单号
+  userId    Int
+  courseId  Int
+  amount    Float    // 支付金额
+  status    Int      @default(0) // 0:待支付 1:已支付 2:已取消 3:已退款
+  payType   String?  // 支付方式：wechat/alipay
+  payTime   DateTime? // 支付时间
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@index([userId])
+  @@index([courseId])
+  @@index([userId, courseId])
+}
+
+// 需要在 Course 模型添加关系
+// orders Order[]
+
+// 需要在 User 模型添加关系
+// orders Order[]

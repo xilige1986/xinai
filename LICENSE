@@ -1,0 +1,55 @@
+                    GNU AFFERO GENERAL PUBLIC LICENSE
+                       Version 3, 19 November 2007
+
+ Copyright (C) 2024 AI Tools Platform Authors
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+=========================================================================
+
+ADDITIONAL TERMS AND CONDITIONS
+
+1. DEPLOYMENT TRACKING AND STATISTICS
+   This software includes an optional deployment tracking feature to help
+   the authors understand usage patterns and improve the software. This
+   feature collects ONLY the following anonymous data:
+
+   - A unique deployment fingerprint (hash, not personally identifiable)
+   - Domain name (if available from environment variables)
+   - Software version number
+   - Timestamps of deployment activity (first seen, last seen)
+   - Count of heartbeat reports
+
+   NO user data, personal information, content, or usage statistics are
+   collected. This tracking is designed to count deployments only.
+
+   To disable tracking, set the environment variable:
+   DISABLE_TRACKING=true
+
+2. COMMERCIAL USE
+   This software is licensed under AGPL-3.0, which requires that any
+   network use (including SaaS) must provide the complete source code
+   to users.
+
+   For commercial use that cannot comply with AGPL requirements,
+   a commercial license is required. Contact the authors for details.
+
+3. ATTRIBUTION
+   You must retain all copyright notices, license information, and the
+   above deployment tracking disclosure when redistributing this software.
+
+=========================================================================
+
+For the full AGPL-3.0 license text, see:
+https://www.gnu.org/licenses/agpl-3.0.html
